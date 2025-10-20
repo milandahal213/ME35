@@ -8,11 +8,11 @@ SSID = secrets.SSID
 PASSWORD = secrets.PWD
 
 # MQTT settings
-MQTT_BROKER = "10.5.11.224"  # Your server's IP 
-MQTT_PORT = 1883
+MQTT_BROKER = "10.5.11.224"  # Your server's IP - find it from your network settings
+MQTT_PORT = 1883 # you may have to configure your port in your conf file in your broker - check with the broker
 CLIENT_ID = "esp32_client"
-TOPIC_PUB = "esp32/data"
-TOPIC_SUB = "esp32/command"
+TOPIC_PUB = "ME35/class"
+TOPIC_SUB = "ME35/milan"
 
 def connect_wifi():
     wlan = network.WLAN(network.STA_IF)
@@ -34,7 +34,7 @@ def connect_wifi():
 
 def mqtt_connect():
     try:
-        print(f"Attempting to connect to MQTT broker at {MQTT_BROKER}:{MQTT_PORT}")
+
         client = MQTTClient(CLIENT_ID, MQTT_BROKER, MQTT_PORT, keepalive=60)
         client.connect()
         print("MQTT Connected successfully!")
@@ -50,6 +50,6 @@ if connect_wifi():
     client = mqtt_connect()
     if client:
         try:
-            client.publish("esp32/test", "Hello!")
+            client.publish(TOPIC_PUB, "Hello!")
         except Exception as e:
             print(f"Publish failed: {e}")
