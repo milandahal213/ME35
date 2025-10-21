@@ -35,10 +35,6 @@ def connect_wifi():
         print("WiFi connection failed!")
         return False
 
-
-def sub_cb(topic, msg):
-    print(f"Received message on topic '{topic.decode()}' : '{msg.decode()}'")
-
 def mqtt_connect():
     try:
         client = MQTTClient(
@@ -50,9 +46,7 @@ def mqtt_connect():
             ssl=True,  # Enable SSL
             ssl_params={'server_hostname': MQTT_BROKER}  # Important for certificate validation
         )
-        client.set_callback(sub_cb)
         client.connect()
-        client.subscribe(TOPIC_SUB) # change this to the topic you want to subscribe
         print("MQTT Connected successfully!")
         return client
     except OSError as e:
@@ -65,13 +59,8 @@ def mqtt_connect():
 if connect_wifi():
     client = mqtt_connect()
     if client:
-        while True:
-            try:
-                client.check_msg()
-                time.sleep(1)
-            except Exception as e:
-                print(f"Checking message failed: {e}")
-
-        
-            
-          
+        try:
+            client.publish(TOPIC_PUB, b'Hello from ESP32!')
+            print("Message published successfully!")
+        except Exception as e:
+            print(f"Publish failed: {e}")
