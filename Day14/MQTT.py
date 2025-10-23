@@ -21,8 +21,8 @@ class MQTTDevice:
         self.MQTT_PORT = 8883
         self.MQTT_USERNAME = secrets.mqtt_username 
         self.MQTT_PASSWORD = secrets.mqtt_password 
-        self.CLIENT_ID = "esp32_client"
-        self.TOPIC_PUB = "/ME35/test"
+        self.CLIENT_ID = "milan"
+        self.TOPIC_PUB = "/ME35/0"
 
         
         self.button = Pin(35, Pin.IN, Pin.PULL_UP)
@@ -31,14 +31,15 @@ class MQTTDevice:
     def button_pressed(self, p):
         #how do you add debounce?
         #uncomment the following - try to understand what's happening 
-        now_time = time.ticks_ms()
-        if(now_time - self.entered_time < 200):
-            return
-        self.entered_time = now_time
+        #now_time = time.ticks_ms()
+        #if(now_time - self.entered_time < 200):
+        #    return
+        #self.entered_time = now_time
             
-        self.client.publish(self.TOPIC_PUB, b'Hi')
+        self.client.publish(self.TOPIC_PUB, b'{"color":[100,100,0]}')
         print("Button was pressed")
-        
+      
+      
     def connect_wifi(self):
         self.wlan = network.WLAN(network.STA_IF)
         self.wlan.active(True)
@@ -65,9 +66,9 @@ class MQTTDevice:
         self.client.subscribe(topic)
         
     def sub_cb(self, topic, msg):
-        #json_str = json.loads(msg)
-        #self.np[0] = json_str["color"]
-        #self.np.write()
+        json_str = json.loads(msg)
+        self.np[0] = json_str["color"]
+        self.np.write()
         print(f"Received message on topic '{topic.decode()}' : '{msg.decode()}'")
 
     def mqtt_connect(self):
@@ -99,7 +100,7 @@ mqtt_obj = MQTTDevice()
 
 if mqtt_obj.connect_wifi():
     client = mqtt_obj.mqtt_connect()
-    #mqtt_obj.subscribe("/ME35/test")
+    mqtt_obj.subscribe("/ME35/colortest")
 
 
 
