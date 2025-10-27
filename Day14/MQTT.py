@@ -31,10 +31,10 @@ class MQTTDevice:
     def button_pressed(self, p):
         #how do you add debounce?
         #uncomment the following - try to understand what's happening 
-        #now_time = time.ticks_ms()
-        #if(now_time - self.entered_time < 200):
-        #    return
-        #self.entered_time = now_time
+        now_time = time.ticks_ms()
+        if(now_time - self.entered_time < 200):
+            return
+        self.entered_time = now_time
             
         self.client.publish(self.TOPIC_PUB, b'{"color":[100,100,0]}')
         print("Button was pressed")
@@ -66,9 +66,9 @@ class MQTTDevice:
         self.client.subscribe(topic)
         
     def sub_cb(self, topic, msg):
-        json_str = json.loads(msg)
-        self.np[0] = json_str["color"]
-        self.np.write()
+        #json_str = json.loads(msg)
+        #self.np[0] = json_str["color"]
+        #self.np.write()
         print(f"Received message on topic '{topic.decode()}' : '{msg.decode()}'")
 
     def mqtt_connect(self):
@@ -100,16 +100,17 @@ mqtt_obj = MQTTDevice()
 
 if mqtt_obj.connect_wifi():
     client = mqtt_obj.mqtt_connect()
-    mqtt_obj.subscribe("/ME35/colortest")
+    mqtt_obj.subscribe("/ME35/new")
 
 
 
-while True:
-    try:
-        client.check_msg()
-        time.sleep(1)
-    except Exception as e:
-        print(f"Checking message failed: {e}")
+    while True:
+        try:
+            mqtt_obj.publish("/ME35/brandnew", b'hi new topic')
+            client.check_msg()
+            time.sleep(1)
+        except Exception as e:
+            print(f"Checking message failed: {e}")
 
       
             
