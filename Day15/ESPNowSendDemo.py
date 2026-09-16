@@ -12,4 +12,6 @@ e.active(True)
 peer = b'\xff\xff\xff\xff\xbb\xff'   # MAC address of peer's wifi interface
 e.add_peer(peer)      # Must add_peer() before send()
 
+
+
 e.send(peer, prefs.message) 

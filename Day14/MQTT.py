@@ -66,9 +66,10 @@ class MQTTDevice:
         self.client.subscribe(topic)
         
     def sub_cb(self, topic, msg):
-        #json_str = json.loads(msg)
-        #self.np[0] = json_str["color"]
-        #self.np.write()
+            
+        json_str = json.loads(msg)
+        self.np[0] = json_str["color"]
+        self.np.write()
         print(f"Received message on topic '{topic.decode()}' : '{msg.decode()}'")
 
     def mqtt_connect(self):
@@ -106,13 +107,13 @@ if mqtt_obj.connect_wifi():
 
     while True:
         try:
-            mqtt_obj.publish("/ME35/brandnew", b'hi new topic')
+            #mqtt_obj.publish("/ME35/brandnew", b'turn')
             client.check_msg()
             time.sleep(1)
         except Exception as e:
             print(f"Checking message failed: {e}")
 
-      
+
             
           
 
