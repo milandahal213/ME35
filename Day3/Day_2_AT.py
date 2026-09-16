@@ -23,14 +23,10 @@ headers = {'Authorization': 'Bearer ' + token}
 response = urequests.get(url, headers=headers)
 
 print(response.status_code)
+print(response)
 
-if response.status_code == 200:
-    data = response.json()
-    print("Response data:", data)
-    for rec in data["records"]:
-        print(rec["fields"]["where"]) #'where' is the name of the column 
-else:
-    print(f"Error: {response.status_code}")
-    print(response.text)
+
+
+
     
 
