@@ -1,8 +1,5 @@
 # k Nearest Neighbor demo
 
-# [accelerometer, motor position, LED_color]
-
-
 from machine import Pin
 import neopixel
 
@@ -30,8 +27,6 @@ def playButton(p):
     STATE_PLAY = True
     print(data)
 
-    
-    
 #button_Train.irq(trigger=Pin.IRQ_RISING, handler=trainButton)
 button_Play.irq(trigger=Pin.IRQ_RISING, handler=playButton)
 
