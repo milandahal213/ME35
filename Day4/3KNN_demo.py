@@ -16,6 +16,7 @@ count = 0
 
 data = [[0,1],[100,2], [50,3],[2,1],[95,2], [48,3],[8,1],[89,2], [35,3],[20,1],[80,2], [35,3]]
 #color_LUT = {1:(0,0,100),2:(0,100,0),3:(100,0,0)}
+data1 = [{"data": 0, "label":1},{"data": 1, "label":1},{"data": 6, "label":2},{"data": 8, "label":2}]
 
 button_Play = Pin(35, Pin.IN, Pin.PULL_UP)
 
@@ -54,6 +55,27 @@ def k_nearest_neighbor(x, k =1):
     return most_number_of_closest_classes
 
 
+       
+def k_nearest_neighbor(user_data, k = 1):
+    distances = []
+    for data_point in data1:
+        dist = math.sqrt((data_point["data"]-user_data["data"])**2)
+        distances.append([dist,data_point["label"]])
+        print("Before sorting", distances)
+    
+    distances.sort()
+    distances = distances[:k] #get k distances
+    print("distances", distances)
+    classes = []
+    for dist in distances:
+        classes.append(dist[1])
+    print("k classes", classes)
+    most_number_of_closest_classes = max(set(classes), key = classes.count)
+    print("max classes ", most_number_of_closest_classes)
+    
+    return most_number_of_closest_classes
+
+
 
 while True:
     if(STATE_TRAIN):
@@ -65,5 +87,3 @@ while True:
         print(what_class)
         time.sleep(0.1)
         STATE_PLAY = False
-        
-    

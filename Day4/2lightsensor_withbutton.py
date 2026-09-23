@@ -1,7 +1,7 @@
 from machine import ADC, Pin
 from time import ticks_diff, ticks_ms
 
-lightsensor = ADC(Pin(39))
+lightsensor = ADC(Pin(25))
 
 btn = Pin(34, Pin.IN, Pin.PULL_UP) 
 DEBOUNCE_MS = 200
